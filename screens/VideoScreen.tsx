@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,20 +7,21 @@ import {
   SafeAreaView,
   Platform,
   FlatList,
-  ScrollView,
+  Pressable,
+  TextInput,
 } from "react-native";
-import video from "../assets/data/video.json";
-import {
-  AntDesign,
-  Octicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { IconsContainer } from "../components/iconsContainer/IconsContainer";
-import { TextInput } from "react-native-gesture-handler";
 import { VideListItem } from "../components/VideListItem/VideListItem";
+import video from "../assets/data/video.json";
 import videos from "../assets/data/videos.json";
 import { VideoPlayer } from "./../components/VideoPlayer/VideoPlayer";
+// import BottomSheet from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { VideoComments } from "./../components/VideoComments/VideoComments";
 
 let viewsString = video.views.toString();
 if (video.views > 1000000) {
@@ -31,63 +32,82 @@ if (video.views > 1000000) {
   }
 }
 
-const VideoScreen = () => {
+export const VideoScreen = () => {
+  const commentsSheetRef = useRef<BottomSheetModal>(null);
+
+  const openComments = () => {
+    commentsSheetRef.current?.present();
+  };
+
   return (
     <View>
-      {/* info */}
-      <View style={styles.midContainer}>
-        <Text style={styles.midContainerTags}>{video.tags}</Text>
-        <Text style={styles.midContainerTitle}>{video.title}</Text>
-        <Text style={styles.midContainerSubTitle}>
-          {video.user.name} {viewsString} views {video.createdAt}
-        </Text>
-      </View>
-      {/* Actions */}
-      <IconsContainer />
-      {/* user info */}
-      <View style={styles.userInfoContainer}>
-        <View style={styles.userInfo}>
-          <Image
-            source={{
-              uri: video.user.image,
-            }}
-            style={styles.avatar}
-          />
-          <View style={styles.userInfoTextCont}>
-            <Text style={styles.userInfoTitle}>{video.user.name}</Text>
-            <Text style={styles.userInfoSubTitle}>
-              {video.user.subscribers} subscribers
-            </Text>
+      <View style={{ flex: 1 }}>
+        {/* info */}
+        <View style={styles.midContainer}>
+          <Text style={styles.midContainerTags}>{video.tags}</Text>
+          <Text style={styles.midContainerTitle}>{video.title}</Text>
+          <Text style={styles.midContainerSubTitle}>
+            {video.user.name} {viewsString} views {video.createdAt}
+          </Text>
+        </View>
+        {/* Actions */}
+        <IconsContainer />
+        {/* user info */}
+        <View style={styles.userInfoContainer}>
+          <View style={styles.userInfo}>
+            <Image
+              source={{
+                uri: video.user.image,
+              }}
+              style={styles.avatar}
+            />
+            <View style={styles.userInfoTextCont}>
+              <Text style={styles.userInfoTitle}>{video.user.name}</Text>
+              <Text style={styles.userInfoSubTitle}>
+                {video.user.subscribers} subscribers
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.subscrButton}>SUBSCRIBE</Text>
+        </View>
+        {/* comments */}
+        <View style={styles.commentsContainer}>
+          <Pressable onPress={openComments}>
+            <View style={styles.commentsContainerTitle}>
+              <Text style={styles.commentsContainerText}>Comments 1,5 k</Text>
+              <MaterialCommunityIcons
+                name="arrow-up-down-bold-outline"
+                size={20}
+                color="lightgrey"
+              />
+            </View>
+          </Pressable>
+          <View style={styles.inputContainer}>
+            <Image
+              source={{
+                uri: video.user.image,
+              }}
+              style={styles.avatar2}
+            />
+            <TextInput
+              placeholder="  Enter comment"
+              style={styles.input}
+              placeholderTextColor="grey"
+            />
           </View>
         </View>
-        <Text style={styles.subscrButton}>SUBSCRIBE</Text>
+        {/* All comments */}
+        <BottomSheetModal
+          snapPoints={["75%"]}
+          index={0}
+          ref={commentsSheetRef}
+          style={{ backgroundColor: "#121211" }}
+        >
+          <VideoComments />
+        </BottomSheetModal>
+        {/* recomended */}
+        {/* <View style={styles.line} /> */}
       </View>
-      {/* comments */}
-      <View style={styles.commentsContainer}>
-        <View style={styles.commentsContainerTitle}>
-          <Text style={styles.commentsContainerText}>Comments 1,5 k</Text>
-          <MaterialCommunityIcons
-            name="arrow-up-down-bold-outline"
-            size={20}
-            color="lightgrey"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Image
-            source={{
-              uri: video.user.image,
-            }}
-            style={styles.avatar2}
-          />
-          <TextInput
-            placeholder="   Enter comment"
-            style={styles.commentInput}
-            placeholderTextColor="grey"
-          />
-        </View>
-      </View>
-      {/* recomended */}
-      <View style={styles.line} />
     </View>
   );
 };
@@ -95,14 +115,15 @@ const VideoScreen = () => {
 const VideoScreenWithRecomendations = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <VideoPlayer videoURI={video.videoUrl} thumbnailURI={video.thumbnail} />
-      {/* <Image style={styles.videoPlayer} source={{ uri: video.thumbnail }} /> */}
-      <FlatList
-        data={videos}
-        renderItem={({ item }) => <VideListItem data={item} />}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={VideoScreen}
-      />
+      <BottomSheetModalProvider>
+        <VideoPlayer videoURI={video.videoUrl} thumbnailURI={video.thumbnail} />
+        <FlatList
+          data={videos}
+          renderItem={({ item }) => <VideListItem data={item} />}
+          keyExtractor={(item) => item.id}
+          ListHeaderComponent={VideoScreen}
+        />
+      </BottomSheetModalProvider>
     </SafeAreaView>
   );
 };
@@ -186,28 +207,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
   },
+
+  line: {
+    borderWidth: 4,
+    borderColor: "#6b6a68",
+  },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 15,
-    marginBottom: 15,
-  },
-  commentInput: {
-    width: 300,
-    height: 30,
-    backgroundColor: "black",
-    marginLeft: 8,
-    color: "grey",
-    borderRadius: 5,
   },
   avatar2: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginLeft: 5,
+    marginLeft: 15,
   },
-  line: {
-    borderWidth: 4,
-    borderColor: "#6b6a68",
+  input: {
+    width: 250,
+    height: 35,
+    backgroundColor: "black",
+    marginLeft: 10,
+    borderRadius: 10,
+    alignItems: "center",
   },
 });
