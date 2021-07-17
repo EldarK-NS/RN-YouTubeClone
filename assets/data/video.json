@@ -2,12 +2,13 @@
   "id": "1",
   "createdAt": "5 months ago",
   "title": "Build a Realtime Chat App in React Native (tutorial for beginners) 🔴  ",
-  "thumbnail": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/thumbnails/thumbnail1.jpeg",
+  "thumbnail": "https://images.squarespace-cdn.com/content/608c562572a3784d8da4b74e/1624478463375-AZJDJ9ME7XC69CRQ5BX7/Capsule+Florida+Above_110521.jpg?format=1500w&content-type=image%2Fjpeg",
   "videoUrl": "",
   "duration": 384,
   "user": {
-    "name": "Vadim Savin",
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg"
+    "name": "Elena Slavina",
+    "image": "https://famousbirthdays.io/wp-content/uploads/2021/05/face.png",
+    "subscribers":"15 k"
   },
   "views": 357000,
   "tags": "#VadimSavin #notjust #notJustDeveloper",
