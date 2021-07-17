@@ -1,0 +1,49 @@
+[{
+  "id": "1",
+  "createdAt": "5 months ago",
+  "title": "Build a Realtime Chat App in React Native (tutorial for beginners) ",
+  "thumbnail": "https://images.squarespace-cdn.com/content/608c562572a3784d8da4b74e/1624478463375-AZJDJ9ME7XC69CRQ5BX7/Capsule+Florida+Above_110521.jpg?format=1500w&content-type=image%2Fjpeg",
+  "videoUrl": "",
+  "duration": 384,
+  "user": {
+    "name": "Elena",
+    "image": "https://famousbirthdays.io/wp-content/uploads/2021/05/face.png"
+  },
+  "views": 357000
+}, {
+  "id": "2",
+  "createdAt": "2 months ago",
+  "title": " Build the Uber clone in React Native (Tutorial for Beginners)",
+  "thumbnail": "https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/Zugpsitze_mountain.jpg?crop=0,176,3008,1654&wid=4000&hei=2200&scl=0.752",
+  "videoUrl": "",
+  "duration": 584,
+  "user": {
+    "name": "Alex",
+    "image": "https://mahagon-events.ru/wp-content/uploads/2018/10/face-480x600.jpg"
+  },
+  "views": 257000
+}, {
+  "id": "3",
+  "createdAt": "2 months ago",
+  "title": "How Graham Stephan makes $4,578,896.32 a year on YouTube",
+  "thumbnail": "https://cdn.potatopro.com/cdn/ff/JQXb7TKug2p91J06Y2yTcLbx-36mugWlMAkXZHiWzc0/1592902187/public/styles/1200_wide/public/field/image/kazakhstan-astana-809.jpg?itok=unyDzN2-",
+  "videoUrl": "",
+  "duration": 584,
+  "user": {
+    "name": " Stephanya",
+    "image": "https://ruralindiaonline.org/media/images/Vedvati_faces_Shruti_Mahajan_copy.2e16d0ba.fill-512x512.jpg"
+  },
+  "views": 257000
+}, {
+  "id": "4",
+  "createdAt": "2 months ago",
+  "title": "My One Month Bitcoin Mining Journey",
+  "thumbnail": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/thumbnails/thumbnail4.jpeg",
+  "videoUrl": "",
+  "duration": 584,
+  "user": {
+    "name": "Biahaze",
+    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/biahaze.jpg"
+  },
+  "views": 257000
+}]
