@@ -20,6 +20,7 @@ import { IconsContainer } from "../components/iconsContainer/IconsContainer";
 import { TextInput } from "react-native-gesture-handler";
 import { VideListItem } from "../components/VideListItem/VideListItem";
 import videos from "../assets/data/videos.json";
+import { VideoPlayer } from "./../components/VideoPlayer/VideoPlayer";
 
 let viewsString = video.views.toString();
 if (video.views > 1000000) {
@@ -94,7 +95,8 @@ const VideoScreen = () => {
 const VideoScreenWithRecomendations = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Image style={styles.videoPlayer} source={{ uri: video.thumbnail }} />
+      <VideoPlayer videoURI={video.videoUrl} thumbnailURI={video.thumbnail} />
+      {/* <Image style={styles.videoPlayer} source={{ uri: video.thumbnail }} /> */}
       <FlatList
         data={videos}
         renderItem={({ item }) => <VideListItem data={item} />}
