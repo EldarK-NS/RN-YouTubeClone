@@ -2,47 +2,36 @@ import React from "react";
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Video } from "../../src/models";
 
 type VideListItemProps = {
-  data: {
-    id: string;
-    createdAt: string;
-    title: string;
-    thumbnail: string;
-    videoUrl: string;
-    duration: number;
-    User: {
-      name: string;
-      image: string;
-    };
-    views: number;
-  };
+  video: Video;
 };
 
 export const VideListItem = (props: VideListItemProps) => {
-  const { data } = props;
+  const { video } = props;
   const navigation = useNavigation();
 
-  const minutes = Math.floor(data.duration / 60);
-  const seconds = data.duration % 60;
+  const minutes = Math.floor(video.duration / 60);
+  const seconds = video.duration % 60;
 
-  let viewsString = data.views.toString();
-  if (data.views > 1000000) {
-    viewsString = (data.views / 1000000).toFixed(1) + "m";
+  let viewsString = video.views.toString();
+  if (video.views > 1000000) {
+    viewsString = (video.views / 1000000).toFixed(1) + "m";
   } else {
-    if (data.views > 1000) {
-      viewsString = (data.views / 1000).toFixed() + " k";
+    if (video.views > 1000) {
+      viewsString = (video.views / 1000).toFixed() + " k";
     }
   }
   const openVideoPage = () => {
-    navigation.navigate("VideoScreen", { id: data.id });
+    navigation.navigate("VideoScreen", { id: video.id });
   };
 
   return (
     <Pressable onPress={openVideoPage}>
       <View style={styles.videoCard}>
         <View>
-          <Image style={styles.image} source={{ uri: data.thumbnail }} />
+          <Image style={styles.image} source={{ uri: video.thumbnail }} />
           <View style={styles.timerContainer}>
             <Text style={styles.timerText}>
               {minutes}:{seconds < 10 ? "0" : ""}
@@ -53,15 +42,21 @@ export const VideListItem = (props: VideListItemProps) => {
         <View style={styles.titleRow}>
           <Image
             source={{
-              uri: data.User?.image,
+              uri: video.User?.image,
             }}
             style={styles.avatar}
           />
           <View style={styles.midContainer}>
-            <Text style={styles.midContainerTitle}>{data.title}</Text>
+            <Text
+              style={styles.midContainerTitle}
+              ellipsizeMode="tail"
+              numberOfLines={2}
+            >
+              {video.title}
+            </Text>
             <Text style={styles.midContainerSubTitle}>
-              {data.User?.name || " No Name"} {viewsString} views{" "}
-              {data.createdAt}
+              {video.User?.name || " No Name"} {viewsString} views{" "}
+              {video.createdAt}
             </Text>
           </View>
           <Entypo

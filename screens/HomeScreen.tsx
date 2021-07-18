@@ -6,20 +6,15 @@ import { DataStore, graphqlOperation } from "aws-amplify";
 import { Video } from "../src/models";
 
 export const HomeScreen = () => {
-  const [videos, setVideos] = useState<Video>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   useEffect(() => {
-    const fetchVideos = async () => {
-      const response = await DataStore.query(Video);
-      console.log(response);
-      setVideos(response);
-    };
-    fetchVideos();
+    DataStore.query(Video).then(setVideos);
   }, []);
   return (
     <View>
       <FlatList
         data={videos}
-        renderItem={({ item }) => <VideListItem data={item} />}
+        renderItem={({ item }) => <VideListItem video={item} />}
         keyExtractor={(item) => item.id}
       />
     </View>

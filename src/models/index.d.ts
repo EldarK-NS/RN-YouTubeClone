@@ -25,6 +25,7 @@ export declare class Comment {
   readonly User?: User;
   readonly Video?: Video;
   readonly comment: string;
+  readonly userID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Comment, CommentMetaData>);
@@ -37,6 +38,8 @@ export declare class User {
   readonly image?: string;
   readonly subscribers?: number;
   readonly Videos?: (Video | null)[];
+  readonly Comments?: (Comment | null)[];
+  readonly sub?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);

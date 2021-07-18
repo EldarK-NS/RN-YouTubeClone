@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,45 +9,81 @@ import {
   FlatList,
   Pressable,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { IconsContainer } from "../components/iconsContainer/IconsContainer";
-import { VideListItem } from "../components/VideListItem/VideListItem";
-import video from "../assets/data/video.json";
-import videos from "../assets/data/videos.json";
-import { VideoPlayer } from "./../components/VideoPlayer/VideoPlayer";
-// import BottomSheet from "@gorhom/bottom-sheet";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import { VideoComments } from "./../components/VideoComments/VideoComments";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 
-let viewsString = video.views.toString();
-if (video.views > 1000000) {
-  viewsString = (video.views / 1000000).toFixed(1) + "m";
-} else {
-  if (video.views > 1000) {
-    viewsString = (video.views / 1000).toFixed() + " k";
-  }
-}
+import { IconsContainer } from "../components/iconsContainer/IconsContainer";
+import { VideListItem } from "../components/VideListItem/VideListItem";
+import { VideoPlayer } from "./../components/VideoPlayer/VideoPlayer";
+import { DataStore } from "aws-amplify";
+import { Video } from "../src/models";
+import { Comment } from "../src/models";
+import { VideoComments } from "../components/VideoComments/VideoComments";
+import { VideoComment } from "../components/VideoComments/VideoComment";
 
 export const VideoScreen = () => {
+  const [video, setVideo] = useState<Video | undefined>(undefined);
+  const [comments, setComments] = useState<Comment[]>([]);
   const commentsSheetRef = useRef<BottomSheetModal>(null);
+  const route = useRoute();
+  const videoId = route.params?.id;
+  useEffect(() => {
+    DataStore.query(Video, videoId).then(setVideo);
+  }, [videoId]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (!video) {
+        return;
+      }
+      const rex = await DataStore.query(Comment);
+      const videoComments = (await DataStore.query(Comment)).filter(
+        (comment) => comment.videoID === video.id
+      );
+      setComments(videoComments);
+    };
+    fetchComments();
+  }, [video]);
 
   const openComments = () => {
     commentsSheetRef.current?.present();
   };
 
+  if (!video) {
+    return <ActivityIndicator color="white" size="large" />;
+  }
+
+  let viewsString = video.views.toString();
+  if (video.views > 1000000) {
+    viewsString = (video.views / 1000000).toFixed(1) + "m";
+  } else {
+    if (video.views > 1000) {
+      viewsString = (video.views / 1000).toFixed() + " k";
+    }
+  }
+
   return (
     <View>
       <View style={{ flex: 1 }}>
+        <VideoPlayer videoURI={video.videoUrl} thumbnailURI={video.thumbnail} />
         {/* info */}
         <View style={styles.midContainer}>
           <Text style={styles.midContainerTags}>{video.tags}</Text>
-          <Text style={styles.midContainerTitle}>{video.title}</Text>
+          <Text
+            style={styles.midContainerTitle}
+            ellipsizeMode="tail"
+            numberOfLines={2}
+          >
+            {video.title}
+          </Text>
           <Text style={styles.midContainerSubTitle}>
-            {video.user.name} {viewsString} views {video.createdAt}
+            {video.User?.name} {viewsString} views {video.createdAt}
           </Text>
         </View>
         {/* Actions */}
@@ -57,14 +93,14 @@ export const VideoScreen = () => {
           <View style={styles.userInfo}>
             <Image
               source={{
-                uri: video.user.image,
+                uri: video.User?.image,
               }}
               style={styles.avatar}
             />
             <View style={styles.userInfoTextCont}>
-              <Text style={styles.userInfoTitle}>{video.user.name}</Text>
+              <Text style={styles.userInfoTitle}>{video.User?.name}</Text>
               <Text style={styles.userInfoSubTitle}>
-                {video.user.subscribers} subscribers
+                {video.User?.subscribers} subscribers
               </Text>
             </View>
           </View>
@@ -81,20 +117,8 @@ export const VideoScreen = () => {
                 color="lightgrey"
               />
             </View>
+            {comments.length > 0 && <VideoComment comment={comments[0]} />}
           </Pressable>
-          <View style={styles.inputContainer}>
-            <Image
-              source={{
-                uri: video.user.image,
-              }}
-              style={styles.avatar2}
-            />
-            <TextInput
-              placeholder="  Enter comment"
-              style={styles.input}
-              placeholderTextColor="grey"
-            />
-          </View>
         </View>
         {/* All comments */}
         <BottomSheetModal
@@ -103,23 +127,27 @@ export const VideoScreen = () => {
           ref={commentsSheetRef}
           style={{ backgroundColor: "#121211" }}
         >
-          <VideoComments />
+          <VideoComments comments={comments} videoID={video.id} />
         </BottomSheetModal>
         {/* recomended */}
-        {/* <View style={styles.line} /> */}
+        <View style={styles.line} />
       </View>
     </View>
   );
 };
 
 const VideoScreenWithRecomendations = () => {
+  const [videos, setVideos] = useState<Video[]>([]);
+  useEffect(() => {
+    DataStore.query(Video).then(setVideos);
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <BottomSheetModalProvider>
-        <VideoPlayer videoURI={video.videoUrl} thumbnailURI={video.thumbnail} />
         <FlatList
           data={videos}
-          renderItem={({ item }) => <VideListItem data={item} />}
+          renderItem={({ item }) => <VideListItem video={item} />}
           keyExtractor={(item) => item.id}
           ListHeaderComponent={VideoScreen}
         />
@@ -216,19 +244,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
-  },
-  avatar2: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginLeft: 15,
-  },
-  input: {
-    width: 300,
-    height: 30,
-    backgroundColor: "black",
-    marginLeft: 10,
-    borderRadius: 10,
-    alignItems: "center",
   },
 });
