@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 10,
   },
   avatar2: {
     width: 40,
@@ -223,8 +224,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   input: {
-    width: 250,
-    height: 35,
+    width: 300,
+    height: 30,
     backgroundColor: "black",
     marginLeft: 10,
     borderRadius: 10,

@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 type VideListItemProps = {
   data: {
@@ -20,6 +21,7 @@ type VideListItemProps = {
 
 export const VideListItem = (props: VideListItemProps) => {
   const { data } = props;
+  const navigation = useNavigation();
 
   const minutes = Math.floor(data.duration / 60);
   const seconds = data.duration % 60;
@@ -32,9 +34,12 @@ export const VideListItem = (props: VideListItemProps) => {
       viewsString = (data.views / 1000).toFixed() + " k";
     }
   }
+  const openVideoPage = () => {
+    navigation.navigate("VideoScreen", { id: data.id });
+  };
 
   return (
-    <View>
+    <Pressable onPress={openVideoPage}>
       <View style={styles.videoCard}>
         <View>
           <Image style={styles.image} source={{ uri: data.thumbnail }} />
@@ -66,7 +71,7 @@ export const VideListItem = (props: VideListItemProps) => {
           />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

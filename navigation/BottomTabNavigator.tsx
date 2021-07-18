@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -12,6 +11,13 @@ import { Explore } from "./../screens/Explore";
 import { AddVideo } from "./../screens/AddVideo";
 import { Subscriptions } from "./../screens/Subscriptions";
 import { Library } from "./../screens/Library";
+import HomeStack from "./HomeStack";
+import {
+  Foundation,
+  Ionicons,
+  AntDesign,
+  MaterialIcons,
+} from "@expo/vector-icons";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -27,10 +33,10 @@ export default function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="HomeScreen"
-        component={TabOneNavigator}
+        component={HomeStack}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <Foundation name="home" size={24} color={color} />
           ),
         }}
       />
@@ -39,7 +45,7 @@ export default function BottomTabNavigator() {
         component={Explore}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <Ionicons name="compass-outline" size={24} color={color} />
           ),
         }}
       />
@@ -48,7 +54,7 @@ export default function BottomTabNavigator() {
         component={AddVideo}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <AntDesign name="pluscircleo" size={24} color={color} />
           ),
         }}
       />
@@ -57,7 +63,7 @@ export default function BottomTabNavigator() {
         component={Subscriptions}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <MaterialIcons name="subscriptions" size={24} color={color} />
           ),
         }}
       />
@@ -66,32 +72,11 @@ export default function BottomTabNavigator() {
         component={Library}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <MaterialIcons name="video-collection" size={24} color={color} />
           ),
         }}
       />
     </BottomTab.Navigator>
-  );
-}
-
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof Ionicons>["name"];
-  color: string;
-}) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
-}
-
-const TabOneStack = createStackNavigator<TabOneParamList>();
-
-function TabOneNavigator() {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerTitle: "Tab One Title" }}
-      />
-    </TabOneStack.Navigator>
   );
 }
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { NativeViewGestureHandler } from "react-native-gesture-handler";
 
 interface VideoCommentsProps {
   comment: {
@@ -19,17 +18,15 @@ interface VideoCommentsProps {
 
 export const VideoComment = ({ comment }: VideoCommentsProps) => {
   return (
-    <NativeViewGestureHandler disallowInterruption={true}>
-      <View style={styles.commentContainer}>
-        <Image
-          source={{
-            uri: comment.user.image,
-          }}
-          style={styles.avatar2}
-        />
-        <Text style={styles.commentText}>{comment.comment}</Text>
-      </View>
-    </NativeViewGestureHandler>
+    <View style={styles.commentContainer}>
+      <Image
+        source={{
+          uri: comment.user.image,
+        }}
+        style={styles.avatar2}
+      />
+      <Text style={styles.commentText}>{comment.comment}</Text>
+    </View>
   );
 };
 
