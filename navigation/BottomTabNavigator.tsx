@@ -42,7 +42,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Explore"
-        component={Explore}
+        component={TabTwoScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="compass-outline" size={24} color={color} />
@@ -51,7 +51,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="AddVideo"
-        component={AddVideo}
+        component={TabTwoScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <AntDesign name="pluscircleo" size={24} color={color} />
@@ -60,7 +60,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Subscriptions"
-        component={Subscriptions}
+        component={TabTwoScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="subscriptions" size={24} color={color} />
@@ -69,7 +69,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Library"
-        component={Library}
+        component={TabTwoScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="video-collection" size={24} color={color} />

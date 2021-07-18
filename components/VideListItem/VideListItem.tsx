@@ -11,7 +11,7 @@ type VideListItemProps = {
     thumbnail: string;
     videoUrl: string;
     duration: number;
-    user: {
+    User: {
       name: string;
       image: string;
     };
@@ -53,14 +53,15 @@ export const VideListItem = (props: VideListItemProps) => {
         <View style={styles.titleRow}>
           <Image
             source={{
-              uri: data.user.image,
+              uri: data.User?.image,
             }}
             style={styles.avatar}
           />
           <View style={styles.midContainer}>
             <Text style={styles.midContainerTitle}>{data.title}</Text>
             <Text style={styles.midContainerSubTitle}>
-              {data.user.name} {viewsString} views {data.createdAt}
+              {data.User?.name || " No Name"} {viewsString} views{" "}
+              {data.createdAt}
             </Text>
           </View>
           <Entypo

@@ -42,8 +42,8 @@ function HomeStackComponent() {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
-    padding: 5,
+    marginTop: 25,
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
