@@ -14,7 +14,7 @@ export type BottomTabParamList = {
   Explore: undefined;
   Library: undefined;
   Subscriptions: undefined;
-  AddVideo: undefined;
+  New: undefined;
 };
 
 export type TabOneParamList = {
@@ -23,4 +23,8 @@ export type TabOneParamList = {
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+};
+
+export type VideoUploadParamList = {
+  VideoUpload: undefined;
 };

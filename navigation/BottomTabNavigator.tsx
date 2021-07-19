@@ -5,13 +5,19 @@ import * as React from "react";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import TabTwoScreen from "../screens/TabTwoScreen";
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
+import {
+  BottomTabParamList,
+  TabOneParamList,
+  TabTwoParamList,
+  VideoUploadParamList,
+} from "../types";
 import { HomeScreen } from "./../screens/HomeScreen";
 import { Explore } from "./../screens/Explore";
 import { AddVideo } from "./../screens/AddVideo";
 import { Subscriptions } from "./../screens/Subscriptions";
 import { Library } from "./../screens/Library";
 import HomeStack from "./HomeStack";
+import { VideoUploadScreen } from "./../screens/VideoUploadScreen";
 import {
   Foundation,
   Ionicons,
@@ -50,8 +56,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="AddVideo"
-        component={TabTwoScreen}
+        name="New"
+        component={UploadNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <AntDesign name="pluscircleo" size={24} color={color} />
@@ -91,5 +97,19 @@ function TabTwoNavigator() {
         options={{ headerTitle: "Tab Two Title" }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const UploadStack = createStackNavigator<VideoUploadParamList>();
+
+function UploadNavigator() {
+  return (
+    <UploadStack.Navigator>
+      <UploadStack.Screen
+        name="VideoUpload"
+        component={VideoUploadScreen}
+        options={{ headerTitle: "Upload a video" }}
+      />
+    </UploadStack.Navigator>
   );
 }

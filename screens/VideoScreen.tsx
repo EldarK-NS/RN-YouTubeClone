@@ -21,7 +21,7 @@ import { useRoute } from "@react-navigation/native";
 import { IconsContainer } from "../components/iconsContainer/IconsContainer";
 import { VideListItem } from "../components/VideListItem/VideListItem";
 import { VideoPlayer } from "./../components/VideoPlayer/VideoPlayer";
-import { DataStore } from "aws-amplify";
+import { DataStore, Storage } from "aws-amplify";
 import { Video } from "../src/models";
 import { Comment } from "../src/models";
 import { VideoComments } from "../components/VideoComments/VideoComments";
@@ -29,6 +29,8 @@ import { VideoComment } from "../components/VideoComments/VideoComment";
 
 export const VideoScreen = () => {
   const [video, setVideo] = useState<Video | undefined>(undefined);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const commentsSheetRef = useRef<BottomSheetModal>(null);
   const route = useRoute();
@@ -36,6 +38,23 @@ export const VideoScreen = () => {
   useEffect(() => {
     DataStore.query(Video, videoId).then(setVideo);
   }, [videoId]);
+
+  useEffect(() => {
+    if (!video) {
+      return;
+    }
+    if (video?.videoUrl.startsWith("http")) {
+      setVideoUrl(video.videoUrl);
+    } else {
+      Storage.get(video.videoUrl).then(setVideoUrl);
+    }
+
+    if (video.thumbnail.startsWith("http")) {
+      setImage(video.thumbnail);
+    } else {
+      Storage.get(video.thumbnail).then(setImage);
+    }
+  }, [video]);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -71,7 +90,7 @@ export const VideoScreen = () => {
   return (
     <View>
       <View style={{ flex: 1 }}>
-        <VideoPlayer videoURI={video.videoUrl} thumbnailURI={video.thumbnail} />
+        <VideoPlayer videoURI={videoUrl} thumbnailURI={image} />
         {/* info */}
         <View style={styles.midContainer}>
           <Text style={styles.midContainerTags}>{video.tags}</Text>

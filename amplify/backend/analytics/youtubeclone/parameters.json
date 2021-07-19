@@ -1,0 +1,21 @@
+{
+    "appName": "youtubeclone",
+    "roleName": "pinpointLambdaRolebc01370b",
+    "cloudformationPolicyName": "cloudformationPolicybc01370b",
+    "cloudWatchPolicyName": "cloudWatchPolicybc01370b",
+    "pinpointPolicyName": "pinpointPolicybc01370b",
+    "authPolicyName": "pinpoint_amplify_bc01370b",
+    "unauthPolicyName": "pinpoint_amplify_bc01370b",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
